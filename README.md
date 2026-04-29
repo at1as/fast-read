@@ -4,7 +4,7 @@ Fast Read is a small browser app for showing a script one word at a time, with a
 
 ## Demo
 
-[![Fast Read demo GIF](./demo/preview.gif)](./demo/demo.mov)
+[![Fast Read demo GIF](./demo/preview-12s.gif)](./demo/demo.mov)
 
 Click the GIF to open the full demo video: [demo.mov](./demo/demo.mov)
 

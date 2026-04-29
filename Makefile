@@ -1,7 +1,7 @@
 PORT ?= 8000
 DEMO_DIR := demo
 DEMO_VIDEO := $(DEMO_DIR)/demo.mov
-DEMO_GIF := $(DEMO_DIR)/preview.gif
+DEMO_GIF := $(DEMO_DIR)/preview-12s.gif
 
 .PHONY: help run serve check demo-gif
 
@@ -11,7 +11,7 @@ help:
 		'  make run     Start a local server on http://localhost:$(PORT)' \
 		'  make serve   Alias for make run' \
 		'  make check   Validate the JavaScript entrypoint' \
-		'  make demo-gif Generate demo/preview.gif from demo/demo.mov'
+		'  make demo-gif Generate demo/preview-12s.gif from demo/demo.mov'
 
 run:
 	python3 -m http.server $(PORT)
