@@ -46,6 +46,7 @@ make run PORT=9000
 - `Space` toggles play and pause.
 - `R` restarts from the beginning.
 - `T` toggles verbose reader info like timing details and next-word context.
+- `F` toggles fullscreen for the reader panel.
 - Preset buttons apply sensible default timing profiles.
 - Timing sliders control pause multipliers on top of the base word speed.
 - `Show context words` enables the blurred previous/next word view.

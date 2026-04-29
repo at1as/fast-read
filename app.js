@@ -62,6 +62,7 @@ const elements = {
   resetPresetButton: document.querySelector("#resetPresetButton"),
   playPauseButton: document.querySelector("#playPauseButton"),
   restartButton: document.querySelector("#restartButton"),
+  stagePanel: document.querySelector(".stage-panel"),
   infoPanel: document.querySelector("#infoPanel"),
   previousWord: document.querySelector("#previousWord"),
   currentWord: document.querySelector("#currentWord"),
@@ -415,6 +416,23 @@ function toggleInfoPanel() {
   renderInfoPanel();
 }
 
+async function toggleFullscreen() {
+  if (!document.fullscreenEnabled) {
+    return;
+  }
+
+  if (document.fullscreenElement === elements.stagePanel) {
+    await document.exitFullscreen();
+    return;
+  }
+
+  if (document.fullscreenElement) {
+    await document.exitFullscreen();
+  }
+
+  await elements.stagePanel.requestFullscreen();
+}
+
 function handleScriptUpdate(nextText) {
   stopPlayback();
   elements.scriptInput.value = nextText;
@@ -493,6 +511,10 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key.toLowerCase() === "t" && !typingIntoField) {
     toggleInfoPanel();
+  }
+
+  if (event.key.toLowerCase() === "f" && !typingIntoField) {
+    toggleFullscreen().catch(() => {});
   }
 });
 
