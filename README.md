@@ -4,9 +4,13 @@ Fast Read is a small browser app for showing a script one word at a time, with a
 
 ## Demo
 
-[![Fast Read demo](./demo/demo.png)](./demo/demo.mov)
+[![Fast Read demo GIF](./demo/preview.gif)](./demo/demo.mov)
 
-Click the screenshot to open the demo video: [demo.mov](./demo/demo.mov)
+Click the GIF to open the full demo video: [demo.mov](./demo/demo.mov)
+
+### Fullscreen Mode
+
+![Fast Read fullscreen mode](./demo/fullscreen.png)
 
 ## Features
 
@@ -23,6 +27,7 @@ Click the screenshot to open the demo video: [demo.mov](./demo/demo.mov)
 - `make`
 - `python3` for the local web server
 - `node` for `make check`
+- `ffmpeg` for `make demo-gif`
 
 ## Quick Start
 
@@ -45,6 +50,7 @@ make run PORT=9000
 - `make run` starts the local server.
 - `make serve` is an alias for `make run`.
 - `make check` validates the JavaScript entrypoint.
+- `make demo-gif` regenerates the README preview GIF from the demo video.
 - `make help` lists the available targets.
 
 ## Reader Controls
@@ -59,7 +65,7 @@ make run PORT=9000
 
 ## Project Files
 
-- `demo/` contains the screenshot and video used in the README.
+- `demo/` contains the video and screenshots used in the README.
 - `index.html` contains the app structure.
 - `styles.css` contains the layout and visual styling.
 - `app.js` contains tokenization, playback, presets, and rendering logic.
