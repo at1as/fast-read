@@ -22,6 +22,6 @@ check:
 	node --check app.js
 
 demo-gif:
-	ffmpeg -y -ss 0 -t 6 -i $(DEMO_VIDEO) \
+	ffmpeg -y -ss 0 -t 12 -i $(DEMO_VIDEO) \
 		-vf "fps=12,scale=960:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer:bayer_scale=3" \
 		-loop 0 $(DEMO_GIF)
