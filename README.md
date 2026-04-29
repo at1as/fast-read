@@ -2,6 +2,12 @@
 
 Fast Read is a small browser app for showing a script one word at a time, with adjustable pacing for different kinds of pauses.
 
+## Demo
+
+[![Fast Read demo](./demo/demo.png)](./demo/demo.mov)
+
+Click the screenshot to open the demo video: [demo.mov](./demo/demo.mov)
+
 ## Features
 
 - Paste text directly or load a `.txt` / `.md` file.
@@ -53,6 +59,7 @@ make run PORT=9000
 
 ## Project Files
 
+- `demo/` contains the screenshot and video used in the README.
 - `index.html` contains the app structure.
 - `styles.css` contains the layout and visual styling.
 - `app.js` contains tokenization, playback, presets, and rendering logic.
