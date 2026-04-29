@@ -62,7 +62,10 @@ const elements = {
   resetPresetButton: document.querySelector("#resetPresetButton"),
   playPauseButton: document.querySelector("#playPauseButton"),
   restartButton: document.querySelector("#restartButton"),
+  infoPanel: document.querySelector("#infoPanel"),
+  previousWord: document.querySelector("#previousWord"),
   currentWord: document.querySelector("#currentWord"),
+  upcomingWord: document.querySelector("#upcomingWord"),
   delayLabel: document.querySelector("#delayLabel"),
   nextWordLabel: document.querySelector("#nextWordLabel"),
   statusBadge: document.querySelector("#statusBadge"),
@@ -75,6 +78,7 @@ const elements = {
   dashInput: document.querySelector("#dashInput"),
   newlineInput: document.querySelector("#newlineInput"),
   periodInput: document.querySelector("#periodInput"),
+  contextWordsInput: document.querySelector("#contextWordsInput"),
   wpmValue: document.querySelector("#wpmValue"),
   commaValue: document.querySelector("#commaValue"),
   dashValue: document.querySelector("#dashValue"),
@@ -89,6 +93,7 @@ const state = {
   isPlaying: false,
   selectedPreset: "moderate",
   isCustomized: false,
+  showInfo: false,
 };
 
 function tokenize(text) {
@@ -110,6 +115,10 @@ function tokenize(text) {
 
 function formatMultiplier(value) {
   return `${value.toFixed(2)}x`;
+}
+
+function hasLineBreak(gap) {
+  return /\n/.test(gap);
 }
 
 function getSettings() {
@@ -224,11 +233,22 @@ function getCurrentToken() {
   return state.tokens[state.index];
 }
 
+function setContextWord(element, text) {
+  element.textContent = text;
+  element.classList.toggle("is-hidden", !text);
+}
+
+function clearContextWords() {
+  setContextWord(elements.previousWord, "");
+  setContextWord(elements.upcomingWord, "");
+}
+
 function renderStage() {
   const settings = getSettings();
   const token = getCurrentToken();
 
   if (!state.tokens.length) {
+    clearContextWords();
     elements.currentWord.textContent = "Paste a script to begin.";
     elements.delayLabel.textContent = "The next delay will adapt to punctuation and line breaks.";
     elements.nextWordLabel.textContent = "Next: —";
@@ -238,6 +258,7 @@ function renderStage() {
   }
 
   if (state.index >= state.tokens.length) {
+    clearContextWords();
     elements.currentWord.textContent = "Finished.";
     elements.delayLabel.textContent = "Restart to read the script again.";
     elements.nextWordLabel.textContent = "Next: —";
@@ -248,12 +269,23 @@ function renderStage() {
 
   const delayInfo = getDelayInfo(token, settings);
   const reasonText = delayInfo.reasons.length ? delayInfo.reasons.join(" + ") : "base word timing only";
+  const previousToken = state.tokens[state.index - 1];
   const nextToken = state.tokens[state.index + 1];
   const progress = ((state.index + 1) / state.tokens.length) * 100;
+  const showContextWords = elements.contextWordsInput.checked;
+  const previousContext = showContextWords && previousToken && !hasLineBreak(previousToken.gap) ? previousToken.text : "";
+  const nextContext = showContextWords && nextToken && !hasLineBreak(token.gap) ? nextToken.text : "";
+  const nextLabel = nextToken
+    ? hasLineBreak(token.gap)
+      ? `Next: ${nextToken.text} (after line break)`
+      : `Next: ${nextToken.text}`
+    : "Next: —";
 
+  setContextWord(elements.previousWord, previousContext);
   elements.currentWord.textContent = token.text;
+  setContextWord(elements.upcomingWord, nextContext);
   elements.delayLabel.textContent = `${delayInfo.delay} ms on this word (${reasonText})`;
-  elements.nextWordLabel.textContent = `Next: ${nextToken ? nextToken.text : "—"}`;
+  elements.nextWordLabel.textContent = nextLabel;
   elements.counterBadge.textContent = `${state.index + 1} / ${state.tokens.length}`;
   elements.progressBar.style.width = `${progress}%`;
 }
@@ -291,6 +323,10 @@ function renderPlayPauseButton() {
   elements.playPauseButton.textContent = state.isPlaying ? "Pause" : "Play";
 }
 
+function renderInfoPanel() {
+  elements.infoPanel.hidden = !state.showInfo;
+}
+
 function render() {
   renderControlValues();
   renderPresetButtons();
@@ -298,6 +334,7 @@ function render() {
   renderStatus();
   renderStage();
   renderPlayPauseButton();
+  renderInfoPanel();
 }
 
 function tick() {
@@ -373,6 +410,11 @@ function restartPlayback() {
   render();
 }
 
+function toggleInfoPanel() {
+  state.showInfo = !state.showInfo;
+  renderInfoPanel();
+}
+
 function handleScriptUpdate(nextText) {
   stopPlayback();
   elements.scriptInput.value = nextText;
@@ -431,6 +473,10 @@ elements.restartButton.addEventListener("click", () => {
   restartPlayback();
 });
 
+elements.contextWordsInput.addEventListener("input", () => {
+  render();
+});
+
 document.addEventListener("keydown", (event) => {
   const activeElement = document.activeElement;
   const typingIntoField =
@@ -443,6 +489,10 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key.toLowerCase() === "r" && !typingIntoField) {
     restartPlayback();
+  }
+
+  if (event.key.toLowerCase() === "t" && !typingIntoField) {
+    toggleInfoPanel();
   }
 });
 

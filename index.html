@@ -38,7 +38,7 @@
             <span class="field-label">Paste text</span>
             <textarea
               id="scriptInput"
-              rows="12"
+              rows="8"
               spellcheck="false"
               placeholder="Paste a script, scene, speech, or article here..."
             ></textarea>
@@ -112,6 +112,20 @@
             </label>
           </div>
 
+          <div class="section-heading">
+            <h2>Display</h2>
+          </div>
+
+          <label class="toggle-field" for="contextWordsInput">
+            <span class="toggle-copy">
+              <span class="toggle-title">Show context words</span>
+              <span class="toggle-note">
+                Display the previous and next word with a soft blur, but stop at line breaks.
+              </span>
+            </span>
+            <input id="contextWordsInput" class="toggle-input" type="checkbox" checked />
+          </label>
+
           <div class="transport">
             <button id="playPauseButton" class="primary-button" type="button">
               Play
@@ -135,8 +149,15 @@
           <div class="stage">
             <p class="stage-kicker">Current word</p>
             <div class="word-frame">
-              <span id="currentWord">Paste a script to begin.</span>
+              <div class="word-lane">
+                <span id="previousWord" class="context-word is-hidden" aria-hidden="true"></span>
+                <span id="currentWord">Paste a script to begin.</span>
+                <span id="upcomingWord" class="context-word is-hidden" aria-hidden="true"></span>
+              </div>
             </div>
+          </div>
+
+          <div id="infoPanel" class="info-panel" hidden>
             <p id="delayLabel" class="stage-copy">
               The next delay will adapt to punctuation and line breaks.
             </p>
@@ -146,6 +167,7 @@
           <div class="hotkeys">
             <span><kbd>Space</kbd> play or pause</span>
             <span><kbd>R</kbd> restart</span>
+            <span><kbd>T</kbd> timing info</span>
           </div>
         </section>
       </main>
